@@ -1,0 +1,364 @@
+package com.metatrope.jdbc.shim;
+
+import com.metatrope.jdbc.shim.client.DefaultQueryEngine;
+import com.metatrope.jdbc.shim.client.QueryEngine;
+
+import java.sql.Array;
+import java.sql.Blob;
+import java.sql.CallableStatement;
+import java.sql.Clob;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.NClob;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLClientInfoException;
+import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
+import java.sql.SQLWarning;
+import java.sql.SQLXML;
+import java.sql.Savepoint;
+import java.sql.Statement;
+import java.sql.Struct;
+import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.Executor;
+
+public class ShimConnection implements Connection {
+    private final ShimJdbcUri jdbcUrl;
+    private final QueryEngine queryEngine;
+    private boolean closed = false;
+
+    public ShimConnection(String url, Properties info) {
+        this.jdbcUrl = new ShimJdbcUri(url);
+        this.queryEngine = new DefaultQueryEngine(jdbcUrl);
+    }
+
+    ShimConnection(String url, QueryEngine queryEngine) {
+        this.jdbcUrl = new ShimJdbcUri(url);
+        this.queryEngine = queryEngine;
+    }
+
+    @Override
+    public <T> T unwrap(Class<T> iface) throws SQLException {
+        if (isWrapperFor(iface)) {
+            return (T) this;
+        }
+        throw new SQLException("No wrapper for " + iface);
+    }
+
+    @Override
+    public boolean isWrapperFor(Class<?> iface) throws SQLException {
+        return iface.isInstance(this);
+    }
+
+    @Override
+    public Statement createStatement() throws SQLException {
+        checkClosed();
+        return new ShimStatement(this);
+    }
+
+    @Override
+    public PreparedStatement prepareStatement(String sql) throws SQLException {
+        checkClosed();
+        return new ShimPreparedStatement(this, sql);
+    }
+
+    @Override
+    public CallableStatement prepareCall(String sql) throws SQLException {
+        throw new SQLFeatureNotSupportedException();
+    }
+
+    @Override
+    public String nativeSQL(String sql) throws SQLException {
+        checkClosed();
+        return sql;
+    }
+
+    @Override
+    public void setAutoCommit(boolean autoCommit) throws SQLException {
+        throw new SQLFeatureNotSupportedException();
+    }
+
+    @Override
+    public boolean getAutoCommit() throws SQLException {
+        throw new SQLFeatureNotSupportedException();
+    }
+
+    @Override
+    public void commit() throws SQLException {
+        throw new SQLFeatureNotSupportedException();
+    }
+
+    @Override
+    public void rollback() throws SQLException {
+        throw new SQLFeatureNotSupportedException();
+    }
+
+    @Override
+    public void close() throws SQLException {
+        this.closed = true;
+    }
+
+    @Override
+    public boolean isClosed() throws SQLException {
+        return closed;
+    }
+
+    @Override
+    public DatabaseMetaData getMetaData() throws SQLException {
+        checkClosed();
+        return new ShimDatabaseMetaData(this);
+    }
+
+    @Override
+    public void setReadOnly(boolean readOnly) throws SQLException {
+
+    }
+
+    @Override
+    public boolean isReadOnly() throws SQLException {
+        checkClosed();
+        return true;
+    }
+
+    @Override
+    public void setCatalog(String catalog) throws SQLException {
+        try (Statement s = createStatement()) {
+            s.executeQuery(String.format("USE CATALOG %s", catalog));
+        }
+    }
+
+    @Override
+    public String getCatalog() throws SQLException {
+        try (Statement s = createStatement()) {
+            s.executeQuery("SELECT current_catalog()");
+
+        }
+        return null;
+    }
+
+    @Override
+    public void setTransactionIsolation(int level) throws SQLException {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public int getTransactionIsolation() throws SQLException {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public SQLWarning getWarnings() throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void clearWarnings() throws SQLException {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public Statement createStatement(int resultSetType, int resultSetConcurrency) throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
+        throw new SQLFeatureNotSupportedException();
+    }
+
+    @Override
+    public Map<String, Class<?>> getTypeMap() throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void setTypeMap(Map<String, Class<?>> map) throws SQLException {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void setHoldability(int holdability) throws SQLException {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public int getHoldability() throws SQLException {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public Savepoint setSavepoint() throws SQLException {
+        throw new SQLFeatureNotSupportedException();
+    }
+
+    @Override
+    public Savepoint setSavepoint(String name) throws SQLException {
+        throw new SQLFeatureNotSupportedException();
+    }
+
+    @Override
+    public void rollback(Savepoint savepoint) throws SQLException {
+        throw new SQLFeatureNotSupportedException();
+    }
+
+    @Override
+    public void releaseSavepoint(Savepoint savepoint) throws SQLException {
+        throw new SQLFeatureNotSupportedException();
+    }
+
+    @Override
+    public Statement createStatement(int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
+        throw new SQLFeatureNotSupportedException();
+    }
+
+    @Override
+    public PreparedStatement prepareStatement(String sql, int autoGeneratedKeys) throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public PreparedStatement prepareStatement(String sql, int[] columnIndexes) throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public PreparedStatement prepareStatement(String sql, String[] columnNames) throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Clob createClob() throws SQLException {
+        throw new SQLFeatureNotSupportedException();
+    }
+
+    @Override
+    public Blob createBlob() throws SQLException {
+        throw new SQLFeatureNotSupportedException();
+    }
+
+    @Override
+    public NClob createNClob() throws SQLException {
+        throw new SQLFeatureNotSupportedException();
+    }
+
+    @Override
+    public SQLXML createSQLXML() throws SQLException {
+        throw new SQLFeatureNotSupportedException();
+    }
+
+    @Override
+    public boolean isValid(int timeout) throws SQLException {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public void setClientInfo(String name, String value) throws SQLClientInfoException {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void setClientInfo(Properties properties) throws SQLClientInfoException {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public String getClientInfo(String name) throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Properties getClientInfo() throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Array createArrayOf(String typeName, Object[] elements) throws SQLException {
+        throw new SQLFeatureNotSupportedException();
+    }
+
+    @Override
+    public Struct createStruct(String typeName, Object[] attributes) throws SQLException {
+        throw new SQLFeatureNotSupportedException();
+    }
+
+    @Override
+    public void setSchema(String schema) throws SQLException {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public String getSchema() throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void abort(Executor executor) throws SQLException {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public int getNetworkTimeout() throws SQLException {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    ShimJdbcUri getJdbcUrl() {
+        return jdbcUrl;
+    }
+
+    QueryEngine getQueryEngine() {
+        return queryEngine;
+    }
+
+    void checkClosed() throws SQLException {
+        if (isClosed()) {
+            throw new SQLException("Connection is closed");
+        }
+    }
+}
