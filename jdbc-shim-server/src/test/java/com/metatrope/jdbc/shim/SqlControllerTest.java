@@ -3,7 +3,7 @@ package com.metatrope.jdbc.shim;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.metatrope.jdbc.shim.common.model.SqlResponse;
+import com.metatrope.jdbc.common.model.SqlResponse;
 import com.metatrope.jdbc.shim.server.Application;
 
 import java.util.List;

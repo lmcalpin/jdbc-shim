@@ -1,7 +1,7 @@
 package com.metatrope.jdbc.shim;
 
-import com.metatrope.jdbc.shim.client.DefaultQueryEngine;
-import com.metatrope.jdbc.shim.client.QueryEngine;
+import com.metatrope.jdbc.common.QueryEngine;
+import com.metatrope.jdbc.shim.client.ShimQueryEngine;
 
 import java.sql.Array;
 import java.sql.Blob;
@@ -25,17 +25,17 @@ import java.util.Properties;
 import java.util.concurrent.Executor;
 
 public class ShimConnection implements Connection {
-    private final ShimJdbcUri jdbcUrl;
+    private final ShimJdbcUrl jdbcUrl;
     private final QueryEngine queryEngine;
     private boolean closed = false;
 
     public ShimConnection(String url, Properties info) {
-        this.jdbcUrl = new ShimJdbcUri(url);
-        this.queryEngine = new DefaultQueryEngine(jdbcUrl);
+        this.jdbcUrl = new ShimJdbcUrl(url);
+        this.queryEngine = new ShimQueryEngine(jdbcUrl);
     }
 
     ShimConnection(String url, QueryEngine queryEngine) {
-        this.jdbcUrl = new ShimJdbcUri(url);
+        this.jdbcUrl = new ShimJdbcUrl(url);
         this.queryEngine = queryEngine;
     }
 
@@ -348,7 +348,7 @@ public class ShimConnection implements Connection {
         return 0;
     }
 
-    ShimJdbcUri getJdbcUrl() {
+    ShimJdbcUrl getJdbcUrl() {
         return jdbcUrl;
     }
 

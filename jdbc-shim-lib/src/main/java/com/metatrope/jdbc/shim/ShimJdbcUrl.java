@@ -5,7 +5,7 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ShimJdbcUri {
+public class ShimJdbcUrl {
     private static final String JDBC_URL_PREFIX = "jdbc:";
 
     private final String scheme;
@@ -16,7 +16,7 @@ public class ShimJdbcUri {
     private final String uriAsString;
     private final Map<String, Object> properties;
 
-    public ShimJdbcUri(String url) {
+    public ShimJdbcUrl(String url) {
         String cleanURI = url.substring(JDBC_URL_PREFIX.length());
         URI uri = URI.create(cleanURI);
         this.scheme = uri.getScheme();

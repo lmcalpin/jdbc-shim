@@ -1,6 +1,4 @@
-package com.metatrope.jdbc.shim.common.model;
-
-import com.metatrope.jdbc.shim.Parameter;
+package com.metatrope.jdbc.common.model;
 
 import java.util.Map;
 

@@ -1,4 +1,4 @@
-package com.metatrope.jdbc.shim.common.model;
+package com.metatrope.jdbc.common.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

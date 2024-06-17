@@ -1,4 +1,4 @@
-package com.metatrope.jdbc.shim.common.model;
+package com.metatrope.jdbc.common.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,5 +40,13 @@ public class SqlResponse {
 
     public List<List<Object>> getResults() {
         return results;
+    }
+    
+    public List<Object> getRow(int rowNum) {
+        return results.get(rowNum);
+    }
+    
+    public int getCount() {
+        return results.size();
     }
 }

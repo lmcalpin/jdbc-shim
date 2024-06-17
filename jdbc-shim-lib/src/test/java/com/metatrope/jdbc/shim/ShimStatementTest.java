@@ -3,9 +3,9 @@ package com.metatrope.jdbc.shim;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.metatrope.jdbc.shim.client.QueryEngine;
-import com.metatrope.jdbc.shim.common.model.SqlRequest;
-import com.metatrope.jdbc.shim.common.model.SqlResponse;
+import com.metatrope.jdbc.common.QueryEngine;
+import com.metatrope.jdbc.common.model.SqlRequest;
+import com.metatrope.jdbc.common.model.SqlResponse;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

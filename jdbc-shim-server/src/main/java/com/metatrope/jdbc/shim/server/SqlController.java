@@ -1,8 +1,8 @@
 package com.metatrope.jdbc.shim.server;
 
+import com.metatrope.jdbc.common.model.SqlRequest;
+import com.metatrope.jdbc.common.model.SqlResponse;
 import com.metatrope.jdbc.shim.ShimDriver;
-import com.metatrope.jdbc.shim.common.model.SqlRequest;
-import com.metatrope.jdbc.shim.common.model.SqlResponse;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

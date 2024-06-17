@@ -1,8 +1,9 @@
 package com.metatrope.jdbc.shim.client;
 
-import com.metatrope.jdbc.shim.ShimJdbcUri;
-import com.metatrope.jdbc.shim.common.model.SqlRequest;
-import com.metatrope.jdbc.shim.common.model.SqlResponse;
+import com.metatrope.jdbc.common.QueryEngine;
+import com.metatrope.jdbc.common.model.SqlRequest;
+import com.metatrope.jdbc.common.model.SqlResponse;
+import com.metatrope.jdbc.shim.ShimJdbcUrl;
 
 import java.io.IOException;
 import java.net.Authenticator;
@@ -20,10 +21,10 @@ import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.time.Duration;
 
-public class DefaultQueryEngine implements QueryEngine {
-    private final ShimJdbcUri jdbcUrl;
+public class ShimQueryEngine implements QueryEngine {
+    private final ShimJdbcUrl jdbcUrl;
 
-    public DefaultQueryEngine(ShimJdbcUri jdbcUrl) {
+    public ShimQueryEngine(ShimJdbcUrl jdbcUrl) {
         this.jdbcUrl = jdbcUrl;
     }
 

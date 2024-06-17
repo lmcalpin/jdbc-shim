@@ -1,4 +1,4 @@
-package com.metatrope.jdbc.shim;
+package com.metatrope.jdbc.common.model;
 
 import static java.util.Objects.requireNonNull;
 
@@ -6,7 +6,7 @@ public class Parameter {
     private final String value;
     private final Type type;
 
-    Parameter(String value, Type type) {
+    public Parameter(String value, Type type) {
         this.value = requireNonNull(value, "value is null");
         this.type = requireNonNull(type, "type is null");
     }

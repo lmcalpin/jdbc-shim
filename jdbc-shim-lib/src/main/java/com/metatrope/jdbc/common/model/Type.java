@@ -1,4 +1,4 @@
-package com.metatrope.jdbc.shim;
+package com.metatrope.jdbc.common.model;
 
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;

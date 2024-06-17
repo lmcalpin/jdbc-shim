@@ -25,7 +25,7 @@ public class ShimDriver implements Driver {
 
     @Override
     public boolean acceptsURL(String url) throws SQLException {
-        ShimJdbcUri parsedUrl = new ShimJdbcUri(url);
+        ShimJdbcUrl parsedUrl = new ShimJdbcUrl(url);
         if (parsedUrl.getScheme().equalsIgnoreCase("shim")) {
             return true;
         }

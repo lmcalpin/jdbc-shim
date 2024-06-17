@@ -1,6 +1,8 @@
 package com.metatrope.jdbc.shim;
 
-import com.metatrope.jdbc.shim.common.model.SqlRequest;
+import com.metatrope.jdbc.common.model.Parameter;
+import com.metatrope.jdbc.common.model.SqlRequest;
+import com.metatrope.jdbc.common.model.Type;
 
 import java.io.InputStream;
 import java.io.Reader;

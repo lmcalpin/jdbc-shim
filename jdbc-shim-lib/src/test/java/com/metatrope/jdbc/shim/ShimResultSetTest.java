@@ -4,9 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.metatrope.jdbc.shim.client.QueryEngine;
-import com.metatrope.jdbc.shim.common.model.SqlRequest;
-import com.metatrope.jdbc.shim.common.model.SqlResponse;
+import com.metatrope.jdbc.common.QueryEngine;
+import com.metatrope.jdbc.common.model.SqlRequest;
+import com.metatrope.jdbc.common.model.SqlResponse;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -37,7 +37,7 @@ public class ShimResultSetTest {
     }
 
     @Test
-    public void testExecuteSimpleQuery() throws ClassNotFoundException, SQLException {
+    public void testResultSetByIndex() throws ClassNotFoundException, SQLException {
         try (Connection c = new ShimConnection("jdbc:shim:test", new FakeQueryEngine())) {
             Statement stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM account ORDER BY i ASC");
@@ -46,6 +46,21 @@ public class ShimResultSetTest {
                 assertTrue(rs.next());
                 assertEquals("foo", rs.getString(2));
                 int rsi = rs.getInt(3);
+                assertTrue(i == rsi);
+            }
+        }
+    }
+
+    @Test
+    public void testResultSetByColumnLabel() throws ClassNotFoundException, SQLException {
+        try (Connection c = new ShimConnection("jdbc:shim:test", new FakeQueryEngine())) {
+            Statement stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM account ORDER BY i ASC");
+            assertNotNull(rs);
+            for (int i = 0; i < 42; i++) {
+                assertTrue(rs.next());
+                assertEquals("foo", rs.getString("name"));
+                int rsi = rs.getInt("val");
                 assertTrue(i == rsi);
             }
         }

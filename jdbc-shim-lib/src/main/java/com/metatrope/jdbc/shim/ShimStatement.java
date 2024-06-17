@@ -1,6 +1,6 @@
 package com.metatrope.jdbc.shim;
 
-import com.metatrope.jdbc.shim.common.model.SqlRequest;
+import com.metatrope.jdbc.common.model.SqlRequest;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
