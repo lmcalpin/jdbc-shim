@@ -47,7 +47,7 @@ public class OlingoQueryEngine implements QueryEngine {
                     selectedColumnNames = null;
                     break;
                 } else if (selectExpr instanceof Column) {
-                    Column col = ((Column)selectExpr);
+                    Column col = ((Column) selectExpr);
                     selectedColumnNames.add(col.getColumnName());
                 } else {
                     throw new SQLException("Unsupported sql statement");

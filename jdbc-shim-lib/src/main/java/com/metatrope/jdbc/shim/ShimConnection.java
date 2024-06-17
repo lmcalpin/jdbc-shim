@@ -13,8 +13,8 @@ import java.util.Properties;
 public class ShimConnection extends BaseConnectionAdapter {
     public static final String JDBC_URL_PREFIX = "jdbc:shim:";
 
-    public ShimConnection(String url) {
-        super(url, null);
+    public ShimConnection(String url, QueryEngine queryEngineOverride) {
+        super(url, queryEngineOverride);
     }
 
     public ShimConnection(String url, Properties info) {

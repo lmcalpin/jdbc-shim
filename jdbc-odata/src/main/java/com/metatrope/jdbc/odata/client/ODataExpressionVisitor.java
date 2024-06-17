@@ -3,8 +3,6 @@ package com.metatrope.jdbc.odata.client;
 import java.util.List;
 import java.util.Stack;
 
-import org.apache.olingo.client.api.uri.FilterFactory;
-
 import net.sf.jsqlparser.expression.AllValue;
 import net.sf.jsqlparser.expression.AnalyticExpression;
 import net.sf.jsqlparser.expression.AnyComparisonExpression;
@@ -103,27 +101,25 @@ import net.sf.jsqlparser.statement.select.Select;
 
 public class ODataExpressionVisitor implements ExpressionVisitor {
     private List<Token> tokenStack;
-    
+
     public enum TokenType {
-        LITERAL,
-        PROPERTY,
-        OPERATOR;
+        LITERAL, PROPERTY, OPERATOR;
     }
-    
+
     public class Token {
         public String value;
         public TokenType type;
-        
+
         public Token(String value) {
             this(value, TokenType.LITERAL);
         }
-        
+
         public Token(String value, TokenType type) {
             this.value = value;
             this.type = type;
         }
     }
-    
+
     public ODataExpressionVisitor() {
         this.tokenStack = new Stack<>();
     }
@@ -139,7 +135,7 @@ public class ODataExpressionVisitor implements ExpressionVisitor {
         }
         return sb.toString();
     }
-    
+
     @Override
     public void visit(BitwiseRightShift aThis) {
         throw new UnsupportedOperationException();

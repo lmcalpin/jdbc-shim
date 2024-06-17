@@ -25,7 +25,10 @@ public class ODataDriver implements Driver {
 
     @Override
     public boolean acceptsURL(String url) throws SQLException {
-        return ODataJdbcUrl.isValidJODataBCConnectionURL(url);
+        if (url.startsWith(ODataConnection.JDBC_URL_PREFIX)) {
+            return true;
+        }
+        return false;
     }
 
     @Override

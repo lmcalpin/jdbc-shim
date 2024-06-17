@@ -10,17 +10,17 @@ import java.sql.SQLFeatureNotSupportedException;
 import java.sql.SQLWarning;
 import java.sql.Statement;
 
-public abstract class BaseStatementAdapter implements Statement {
+public abstract class BaseStatementAdapter<T extends BaseConnectionAdapter> implements Statement {
     private boolean closed = false;
 
-    private final BaseConnectionAdapter connection;
+    private final T connection;
     private int queryTimeout;
 
-    public BaseStatementAdapter(BaseConnectionAdapter connection) {
+    public BaseStatementAdapter(T connection) {
         this.connection = connection;
     }
     
-    public abstract ResultSet newResultSet(BaseConnectionAdapter connection, SqlResponse response);
+    public abstract ResultSet newResultSet(T connection, SqlResponse response);
 
     @SuppressWarnings("unchecked")
     @Override

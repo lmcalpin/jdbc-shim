@@ -30,7 +30,7 @@ public abstract class BaseConnectionAdapter implements Connection {
         this.queryEngine = newQueryEngine(jdbcUrl);
     }
 
-    BaseConnectionAdapter(String url, QueryEngine queryEngine) {
+    protected BaseConnectionAdapter(String url, QueryEngine queryEngine) {
         this.jdbcUrl = newJdbcUrl(url);
         this.queryEngine = queryEngine;
     }
@@ -46,6 +46,7 @@ public abstract class BaseConnectionAdapter implements Connection {
     protected abstract DatabaseMetaData newDatabaseMetaData();
 
     
+    @SuppressWarnings("unchecked")
     @Override
     public <T> T unwrap(Class<T> iface) throws SQLException {
         if (isWrapperFor(iface)) {

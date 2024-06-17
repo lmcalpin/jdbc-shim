@@ -34,7 +34,7 @@ public class ShimPreparedStatementTest {
 
     @Test
     public void testExecuteQuery() throws ClassNotFoundException, SQLException {
-        try (Connection c = new ShimConnection("jdbc:shim:test")) {
+        try (Connection c = new ShimConnection("jdbc:shim:test", new FakeQueryEngine())) {
             PreparedStatement ps = c.prepareStatement("SELECT * FROM account WHERE val = ? AND valInt = ?");
             ps.setString(1, "test");
             ps.setInt(2, 42);

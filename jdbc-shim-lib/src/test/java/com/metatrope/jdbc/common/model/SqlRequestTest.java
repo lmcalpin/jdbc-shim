@@ -12,6 +12,6 @@ public class SqlRequestTest {
     public void testSqlRequestIsSerializable() throws JsonProcessingException {
         SqlRequest req = new SqlRequest("SELECT * FROM account;");
         String json = new ObjectMapper().writeValueAsString(req);
-        assertEquals("{\"sql\":\"SELECT * FROM account;\",\"parameters\":null}", json);
+        assertEquals("{\"sql\":\"SELECT * FROM account;\",\"parameters\":[]}", json);
     }
 }

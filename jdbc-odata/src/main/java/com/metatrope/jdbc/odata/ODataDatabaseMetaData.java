@@ -4,6 +4,6 @@ import com.metatrope.jdbc.common.BaseDatabaseMetaData;
 
 public class ODataDatabaseMetaData extends BaseDatabaseMetaData {
     public ODataDatabaseMetaData(ODataConnection connection) {
-        this.connection = connection;
+        super(connection);
     }
 }

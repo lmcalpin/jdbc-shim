@@ -2,7 +2,6 @@ package com.metatrope.jdbc.common;
 
 import com.metatrope.jdbc.common.model.Parameter;
 import com.metatrope.jdbc.common.model.SqlRequest;
-import com.metatrope.jdbc.common.model.SqlResponse;
 import com.metatrope.jdbc.common.model.Type;
 
 import java.io.InputStream;
@@ -29,14 +28,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public abstract class BasePreparedStatementAdapter extends BaseStatementAdapter implements PreparedStatement {
+public abstract class BasePreparedStatementAdapter<T extends BaseConnectionAdapter> extends BaseStatementAdapter<T> implements PreparedStatement {
     private static final String INVALID_METHOD = "This method cannot be called on a PreparedStatement";
     
-    private final BaseConnectionAdapter connection;
+    private final T connection;
     private final String sql;
     private final List<Parameter> parameters = new ArrayList<>();
     
-    public BasePreparedStatementAdapter(BaseConnectionAdapter connection, String sql) {
+    public BasePreparedStatementAdapter(T connection, String sql) {
         super(connection);
         this.connection = connection;
         this.sql = sql;

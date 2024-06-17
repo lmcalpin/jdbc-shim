@@ -11,7 +11,7 @@ import java.sql.Statement;
 import java.util.Properties;
 
 public class ODataConnection extends BaseConnectionAdapter {
-    private static final String JDBC_URL_PREFIX = "jdbc:odata:";
+    public static final String JDBC_URL_PREFIX = "jdbc:odata:";
 
     public ODataConnection(String url, Properties info) {
         super(url, info);

@@ -7,4 +7,8 @@ public class ODataResultSet extends BaseResultSetAdapter {
     public ODataResultSet(ODataConnection connection, ODataStatement statement, SqlResponse response) {
         super(connection, statement, response);
     }
+
+    public ODataResultSet(ODataConnection connection, ODataPreparedStatement statement, SqlResponse response) {
+        super(connection, statement, response);
+    }
 }
