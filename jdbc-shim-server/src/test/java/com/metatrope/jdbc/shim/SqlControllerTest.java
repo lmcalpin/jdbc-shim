@@ -3,7 +3,10 @@ package com.metatrope.jdbc.shim;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.metatrope.jdbc.common.model.Parameter;
+import com.metatrope.jdbc.common.model.SqlRequest;
 import com.metatrope.jdbc.common.model.SqlResponse;
+import com.metatrope.jdbc.common.model.Type;
 import com.metatrope.jdbc.shim.server.Application;
 
 import java.util.List;
@@ -23,6 +26,7 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.web.client.RestClient;
 import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.shaded.com.google.common.collect.Lists;
 
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SqlControllerTest {
@@ -95,7 +99,7 @@ public class SqlControllerTest {
 
     @Test
     void testExecuteSelectLiteral() {
-        SqlResponse result = restClient.post().uri(baseUrl + "/statement").contentType(MediaType.APPLICATION_JSON).body("{\"sql\": \"select 12345\" }").retrieve().body(SqlResponse.class);
+        SqlResponse result = executeSql("select 12345;");
         assertEquals(1, result.getResults().size());
         List<?> row = ((List<?>) result.getResults().get(0));
         assertEquals(12345, row.get(0));
@@ -103,7 +107,7 @@ public class SqlControllerTest {
 
     @Test
     void testExecuteSelectQuery() {
-        SqlResponse result = restClient.post().uri(baseUrl + "/statement").contentType(MediaType.APPLICATION_JSON).body("{\"sql\": \"select max(salary) from employees;\" }").retrieve().body(SqlResponse.class);
+        SqlResponse result = executeSql("select max(salary) from employees;");
         assertEquals(1, result.getResults().size());
         List<?> row = ((List<?>) result.getResults().get(0));
         assertEquals(200000, row.get(0));
@@ -111,15 +115,28 @@ public class SqlControllerTest {
 
     @Test
     void testExecuteSelectMultipleRows() {
-        SqlResponse result = executeSql("{\"sql\": \"select count(name) from employees;\" }");
+        SqlResponse result = executeSql("select count(name) from employees;");
         List<?> row = ((List<?>) result.getResults().get(0));
         int numRows = (int) row.get(0);
         result = restClient.post().uri(baseUrl + "/statement").contentType(MediaType.APPLICATION_JSON).body("{\"sql\": \"select * from employees;\" }").retrieve().body(SqlResponse.class);
         assertEquals(numRows, result.getResults().size());
     }
 
+    @Test
+    void testExecutePreparedStatement() {
+        SqlResponse result = executeSql("select * from employees where name = ?", Lists.newArrayList(new Parameter("Jane Doe", Type.STRING)));
+        assertEquals(1, result.getResults().size());
+        List<?> row = ((List<?>) result.getResults().get(0));
+        assertEquals(200000, row.get(0));
+    }
+
     private SqlResponse executeSql(String sql) {
-        SqlResponse result = restClient.post().uri(baseUrl + "/statement").contentType(MediaType.APPLICATION_JSON).body("{\"sql\": \"select count(name) from employees;\" }").retrieve().body(SqlResponse.class);
+        return executeSql(sql, null);
+    }
+    
+    private SqlResponse executeSql(String sql, List<Parameter> parameters) {
+        SqlRequest request = new SqlRequest(sql, parameters);
+        SqlResponse result = restClient.post().uri(baseUrl + "/statement").contentType(MediaType.APPLICATION_JSON).body(request).retrieve().body(SqlResponse.class);
         return result;
     }
 }

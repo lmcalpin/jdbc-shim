@@ -12,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.google.common.collect.Lists;
+
 import org.junit.jupiter.api.Test;
 
 public class ShimStatementTest {
@@ -20,7 +22,7 @@ public class ShimStatementTest {
         @Override
         public SqlResponse executeQuery(SqlRequest request) throws SQLException {
             assertEquals("SELECT * FROM account", request.getSql());
-            return new SqlResponse();
+            return new SqlResponse(Lists.newArrayList(), Lists.newArrayList());
         }
 
     }

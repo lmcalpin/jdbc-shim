@@ -1,5 +1,6 @@
 package com.metatrope.jdbc.shim.server;
 
+import com.metatrope.jdbc.common.model.Parameter;
 import com.metatrope.jdbc.common.model.SqlRequest;
 import com.metatrope.jdbc.common.model.SqlResponse;
 import com.metatrope.jdbc.shim.ShimDriver;
@@ -55,7 +56,14 @@ public class SqlController {
     public SqlResponse execute(@RequestBody SqlRequest request) {
         SqlResponse response;
         try {
-            response = jdbcTemplate.query(request.getSql(), resultSetExtractor);
+            Object[] params = new Object[request.getParameters().size()];
+            int[] types = new int[request.getParameters().size()];
+            int i = 0;
+            for (Parameter param : request.getParameters()) {
+                params[i] = param.getValue();
+                types[i] = param.getType().toSqlType();
+            }
+            response = jdbcTemplate.query(request.getSql(), params, types, resultSetExtractor);
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Exception handling request", e);
             response = new SqlResponse(e);

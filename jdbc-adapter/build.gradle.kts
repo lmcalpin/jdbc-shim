@@ -18,10 +18,9 @@ repositories {
 dependencies {
     // Use JUnit Jupiter for testing.
     testImplementation(libs.junit.jupiter)
+
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    
-    implementation(project(":jdbc-adapter"))
-    
+
     // This dependency is exported to consumers, that is to say found on their compile classpath.
     api(libs.commons.math3)
 

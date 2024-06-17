@@ -11,5 +11,5 @@ plugins {
 }
 
 rootProject.name = "jdbc-shim"
-include("jdbc-shim-lib", "jdbc-shim-server", "jdbc-shim-test")
+include("jdbc-shim-lib", "jdbc-shim-server", "jdbc-shim-test", "jdbc-adapter", "jdbc-odata")
 

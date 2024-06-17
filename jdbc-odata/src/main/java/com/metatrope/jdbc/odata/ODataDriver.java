@@ -1,6 +1,4 @@
-package com.metatrope.jdbc.shim;
-
-import com.metatrope.jdbc.common.JdbcUrl;
+package com.metatrope.jdbc.odata;
 
 import java.sql.Connection;
 import java.sql.Driver;
@@ -12,8 +10,8 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ShimDriver implements Driver {
-    private static final Logger logger = Logger.getLogger(ShimDriver.class.getName());
+public class ODataDriver implements Driver {
+    private static final Logger logger = Logger.getLogger(ODataDriver.class.getName());
 
     private static int MAJOR_VERSION = 1;
     private static int MINOR_VERSION = 0;
@@ -22,15 +20,12 @@ public class ShimDriver implements Driver {
     public Connection connect(String url, Properties info) throws SQLException {
         if (!acceptsURL(url))
             throw new SQLException("Invalid url: " + url);
-        return new ShimConnection(url, info);
+        return new ODataConnection(url, info);
     }
 
     @Override
     public boolean acceptsURL(String url) throws SQLException {
-        if (url.startsWith(ShimConnection.JDBC_URL_PREFIX)) {
-            return true;
-        }
-        return false;
+        return ODataJdbcUrl.isValidJODataBCConnectionURL(url);
     }
 
     @Override
@@ -60,7 +55,7 @@ public class ShimDriver implements Driver {
 
     static {
         try {
-            DriverManager.registerDriver(new ShimDriver());
+            DriverManager.registerDriver(new ODataDriver());
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Failed to register the driver", e);
         }

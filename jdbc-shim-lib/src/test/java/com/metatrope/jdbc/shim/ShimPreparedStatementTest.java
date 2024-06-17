@@ -13,6 +13,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.google.common.collect.Lists;
+
 import org.junit.jupiter.api.Test;
 
 public class ShimPreparedStatementTest {
@@ -25,14 +27,14 @@ public class ShimPreparedStatementTest {
             assertEquals(Type.STRING, request.getParameters().get(1).getType());
             assertEquals("42", request.getParameters().get(2).getValue());
             assertEquals(Type.INTEGER, request.getParameters().get(2).getType());
-            return new SqlResponse();
+            return new SqlResponse(Lists.newArrayList(), Lists.newArrayList());
         }
 
     }
 
     @Test
     public void testExecuteQuery() throws ClassNotFoundException, SQLException {
-        try (Connection c = new ShimConnection("jdbc:shim:test", new FakeQueryEngine())) {
+        try (Connection c = new ShimConnection("jdbc:shim:test")) {
             PreparedStatement ps = c.prepareStatement("SELECT * FROM account WHERE val = ? AND valInt = ?");
             ps.setString(1, "test");
             ps.setInt(2, 42);
