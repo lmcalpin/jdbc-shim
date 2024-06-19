@@ -45,6 +45,7 @@ public class BaseResultSetAdapter implements ResultSet {
         this.rowCount = response.getCount();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> T unwrap(Class<T> iface) throws SQLException {
         if (isWrapperFor(iface)) {

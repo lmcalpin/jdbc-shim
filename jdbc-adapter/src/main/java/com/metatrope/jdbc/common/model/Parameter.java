@@ -5,9 +5,9 @@ import static java.util.Objects.requireNonNull;
 public class Parameter {
     private String value;
     private Type type;
-
-    private Parameter() {}
     
+    protected Parameter() {}
+
     public Parameter(String value, Type type) {
         this.value = requireNonNull(value, "value is null");
         this.type = requireNonNull(type, "type is null");

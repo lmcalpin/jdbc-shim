@@ -1,7 +1,5 @@
 package com.metatrope.jdbc.shim;
 
-import com.metatrope.jdbc.common.JdbcUrl;
-
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;

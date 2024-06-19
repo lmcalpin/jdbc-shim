@@ -26,14 +26,16 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class BasePreparedStatementAdapter<T extends BaseConnectionAdapter> extends BaseStatementAdapter<T> implements PreparedStatement {
     private static final String INVALID_METHOD = "This method cannot be called on a PreparedStatement";
     
     private final T connection;
     private final String sql;
-    private final List<Parameter> parameters = new ArrayList<>();
+    private final Map<Integer, Parameter> parameters = new HashMap<>();
     
     public BasePreparedStatementAdapter(T connection, String sql) {
         super(connection);
@@ -54,7 +56,17 @@ public abstract class BasePreparedStatementAdapter<T extends BaseConnectionAdapt
     @Override
     public ResultSet executeQuery() throws SQLException {
         checkClosed();
-        return newResultSet(connection, connection.getQueryEngine().executeQuery(new SqlRequest(sql, parameters)));
+        List<Parameter> orderedParameters = null;
+        if (!parameters.isEmpty()) {
+            int numBindParameters = parameters.keySet().stream().max(Integer::compareTo).get();
+            orderedParameters = new ArrayList<>(numBindParameters);
+            for (int i = 0; i < numBindParameters; i++) {
+                // bind parameters are 1-based, but the index in our List will be 0-based
+                Parameter paramAtIdx = parameters.get(i + 1);
+                orderedParameters.add(paramAtIdx);
+            }
+        }
+        return newResultSet(connection, connection.getQueryEngine().executeQuery(new SqlRequest(sql, orderedParameters)));
     }
 
     @Override
@@ -342,7 +354,7 @@ public abstract class BasePreparedStatementAdapter<T extends BaseConnectionAdapt
         if (parameterIndex < 1) {
             throw new SQLException("Index out of bounds: " + parameterIndex);
         }
-        //parameters.put(Integer.valueOf(parameterIndex), new Parameter(value, type));
+        parameters.put(Integer.valueOf(parameterIndex), new Parameter(value, type));
     }
 
     void checkClosed() throws SQLException {

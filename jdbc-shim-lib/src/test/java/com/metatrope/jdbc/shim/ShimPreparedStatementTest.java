@@ -23,10 +23,10 @@ public class ShimPreparedStatementTest {
         @Override
         public SqlResponse executeQuery(SqlRequest request) throws SQLException {
             assertEquals("SELECT * FROM account WHERE val = ? AND valInt = ?", request.getSql());
-            assertEquals("test", request.getParameters().get(1).getValue());
-            assertEquals(Type.STRING, request.getParameters().get(1).getType());
-            assertEquals("42", request.getParameters().get(2).getValue());
-            assertEquals(Type.INTEGER, request.getParameters().get(2).getType());
+            assertEquals("test", request.getParameters().get(0).getValue());
+            assertEquals(Type.STRING, request.getParameters().get(0).getType());
+            assertEquals("42", request.getParameters().get(1).getValue());
+            assertEquals(Type.INTEGER, request.getParameters().get(1).getType());
             return new SqlResponse(Lists.newArrayList(), Lists.newArrayList());
         }
 

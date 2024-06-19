@@ -1,6 +1,5 @@
 package com.metatrope.jdbc.common.model;
 
-import java.util.Collections;
 import java.util.List;
 
 public class SqlRequest {
@@ -24,9 +23,6 @@ public class SqlRequest {
     }
 
     public List<Parameter> getParameters() {
-        if (parameters == null) {
-            return Collections.emptyList();
-        }
         return parameters;
     }
 }

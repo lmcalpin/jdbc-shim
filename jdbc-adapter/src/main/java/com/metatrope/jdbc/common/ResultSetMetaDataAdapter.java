@@ -12,6 +12,7 @@ public class ResultSetMetaDataAdapter implements ResultSetMetaData {
         this.response = response;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> T unwrap(Class<T> iface) throws SQLException {
         if (isWrapperFor(iface)) {

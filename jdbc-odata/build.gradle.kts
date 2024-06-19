@@ -26,6 +26,11 @@ dependencies {
     implementation("com.github.jsqlparser:jsqlparser:4.9")
 }
 
+group = "com.metatrope"
+version = "0.0.1"
+description = "jdbc-odata"
+java.sourceCompatibility = JavaVersion.VERSION_21
+
 // Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {

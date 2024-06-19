@@ -56,14 +56,18 @@ public class SqlController {
     public SqlResponse execute(@RequestBody SqlRequest request) {
         SqlResponse response;
         try {
-            Object[] params = new Object[request.getParameters().size()];
-            int[] types = new int[request.getParameters().size()];
-            int i = 0;
-            for (Parameter param : request.getParameters()) {
-                params[i] = param.getValue();
-                types[i] = param.getType().toSqlType();
+            if (request.getParameters() != null) {
+                Object[] params = new Object[request.getParameters().size()];
+                int[] types = new int[request.getParameters().size()];
+                int i = 0;
+                for (Parameter param : request.getParameters()) {
+                    params[i] = param.getValue();
+                    types[i] = param.getType().toSqlType();
+                }
+                response = jdbcTemplate.query(request.getSql(), params, types, resultSetExtractor);
+            } else {
+                response = jdbcTemplate.query(request.getSql(), resultSetExtractor);
             }
-            response = jdbcTemplate.query(request.getSql(), params, types, resultSetExtractor);
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Exception handling request", e);
             response = new SqlResponse(e);

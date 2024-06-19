@@ -8,11 +8,13 @@
 plugins {
     // Apply the java-library plugin for API and implementation separation.
     `java-library`
+    `maven-publish`
 }
 
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
+    mavenLocal() // This is to access the local Maven repository.
 }
 
 dependencies {
@@ -34,6 +36,11 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-core:2.17.1")
 }
 
+group = "com.metatrope"
+version = "0.0.1"
+description = "jdbc-adapter"
+java.sourceCompatibility = JavaVersion.VERSION_21
+
 // Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {
@@ -44,4 +51,10 @@ java {
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+}
+
+publishing {
+    publications.create<MavenPublication>("maven") {
+        from(components["java"])
+    }
 }

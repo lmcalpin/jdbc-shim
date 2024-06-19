@@ -16,6 +16,7 @@ public class BaseDatabaseMetaData implements DatabaseMetaData {
         this.connection = connection;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> T unwrap(Class<T> iface) throws SQLException {
         if (isWrapperFor(iface)) {

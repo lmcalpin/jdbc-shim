@@ -56,10 +56,10 @@ public class SqlControllerTest {
 
     @BeforeEach
     void before() {
-        baseUrl = "http://localhost:" + webServerAppCtxt.getWebServer().getPort();
         if (testDataCreated)
             return;
         testDataCreated = true;
+        baseUrl = "http://localhost:" + webServerAppCtxt.getWebServer().getPort();
         try {
             jdbcTemplate.execute("CREATE DATABASE unittest");
             jdbcTemplate.execute("""
@@ -73,6 +73,7 @@ public class SqlControllerTest {
         } catch (Exception e) {
             // ignore, they probably already exist
         }
+        jdbcTemplate.execute("DELETE FROM employees;");
         jdbcTemplate.execute("INSERT INTO employees(name, birthdate, salary) VALUES('John Doe', '06-06-1973', 100000);");
         jdbcTemplate.execute("INSERT INTO employees(name, birthdate, salary) VALUES('Bob Robertson', '06-06-1923', 200000);");
         jdbcTemplate.execute("INSERT INTO employees(name, birthdate, salary) VALUES('Jane Doe', '06-06-1983', 180000);");
@@ -124,10 +125,10 @@ public class SqlControllerTest {
 
     @Test
     void testExecutePreparedStatement() {
-        SqlResponse result = executeSql("select * from employees where name = ?", Lists.newArrayList(new Parameter("Jane Doe", Type.STRING)));
+        SqlResponse result = executeSql("select salary from employees where name = ?", Lists.newArrayList(new Parameter("Jane Doe", Type.STRING)));
         assertEquals(1, result.getResults().size());
         List<?> row = ((List<?>) result.getResults().get(0));
-        assertEquals(200000, row.get(0));
+        assertEquals(180000, row.get(0));
     }
 
     private SqlResponse executeSql(String sql) {
