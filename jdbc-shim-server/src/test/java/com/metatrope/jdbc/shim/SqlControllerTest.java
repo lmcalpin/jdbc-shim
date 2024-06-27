@@ -92,6 +92,13 @@ public class SqlControllerTest {
     }
 
     @Test
+    void testInvalidMethod() {
+        ResponseEntity<Void> result = restClient.get().uri(baseUrl + "/statement").retrieve().onStatus(status -> status.value() == 405, (request, response) -> {
+        }).toBodilessEntity();
+        assertTrue(result.getStatusCode() == HttpStatusCode.valueOf(405));
+    }
+    
+    @Test
     void testInvalidQuery() {
         ResponseEntity<Void> result = restClient.post().uri(baseUrl + "/statement").contentType(MediaType.APPLICATION_JSON).body("xxxxx").retrieve().onStatus(status -> status.value() == 400, (request, response) -> {
         }).toBodilessEntity();
