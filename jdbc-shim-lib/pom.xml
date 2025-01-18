@@ -7,11 +7,9 @@
         <groupId>com.metatrope</groupId>
         <artifactId>jdbc-shim</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>jdbc-odata</artifactId>
-    <version>0.0.1</version>
-    <description>jdbc-odata</description>
+    <artifactId>jdbc-shim-lib</artifactId>
+    <description>jdbc-shim-lib</description>
     <packaging>jar</packaging>
 
     <properties>
@@ -40,7 +38,6 @@
         <dependency>
             <groupId>com.metatrope</groupId>
             <artifactId>jdbc-adapter</artifactId>
-            <version>0.0.1</version> <!-- Replace with actual version -->
             <scope>compile</scope>
         </dependency>
 
@@ -68,18 +65,19 @@
             <version>33.2.0-jre</version>
         </dependency>
 
-        <!-- OData client core -->
-        <dependency>
-            <groupId>org.apache.olingo</groupId>
-            <artifactId>odata-client-core</artifactId>
-            <version>5.0.0</version>
-        </dependency>
-
         <!-- JSQLParser -->
         <dependency>
             <groupId>com.github.jsqlparser</groupId>
             <artifactId>jsqlparser</artifactId>
             <version>4.9</version>
+        </dependency>
+
+        <!-- used for testing -->        
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.17.1</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

@@ -9,7 +9,6 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>jdbc-odata</artifactId>
-    <version>0.0.1</version>
     <description>jdbc-odata</description>
     <packaging>jar</packaging>
 
@@ -39,7 +38,6 @@
         <dependency>
             <groupId>com.metatrope</groupId>
             <artifactId>jdbc-adapter</artifactId>
-            <version>0.0.1</version> <!-- Replace with actual version -->
             <scope>compile</scope>
         </dependency>
 

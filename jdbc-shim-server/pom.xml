@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -9,7 +9,6 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>jdbc-shim-server</artifactId>
-    <version>0.0.1</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -25,13 +24,15 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.10.2</version> <!-- Replace with the version used by 'libs.junit.jupiter' -->
+            <version>5.10.2</version> <!-- Replace with the version used by
+            'libs.junit.jupiter' -->
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-launcher</artifactId>
-            <version>1.10.0</version> <!-- Replace with the version used by 'libs.junit.platform.launcher' -->
+            <version>1.10.0</version> <!-- Replace with the version used by
+            'libs.junit.platform.launcher' -->
             <scope>test</scope>
         </dependency>
 
@@ -39,7 +40,8 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-math3</artifactId>
-            <version>3.6.1</version> <!-- Replace with the version used by 'libs.commons.math3' -->
+            <version>3.6.1</version> <!-- Replace with the version used by
+            'libs.commons.math3' -->
             <scope>compile</scope>
         </dependency>
 
@@ -47,15 +49,15 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>33.2.0-jre</version> <!-- Replace with the version used by 'libs.guava' -->
+            <version>33.2.0-jre</version> <!-- Replace with the version used by
+            'libs.guava' -->
             <scope>compile</scope>
         </dependency>
 
         <!-- Project dependencies -->
         <dependency>
-            <groupId>com.example</groupId>
+            <groupId>com.metatrope</groupId>
             <artifactId>jdbc-shim-lib</artifactId>
-            <version>0.0.1</version> <!-- Replace with actual version -->
             <scope>compile</scope>
         </dependency>
 
@@ -64,6 +66,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <version>${spring-boot.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -81,6 +89,7 @@
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>postgresql</artifactId>
+            <version>1.19.3</version>
             <scope>test</scope>
         </dependency>
 
@@ -140,4 +149,13 @@
             </plugins>
         </pluginManagement>
     </build>
+    <dependencyManagement>
+    	<dependencies>
+    		<dependency>
+    			<groupId>com.fasterxml.jackson.core</groupId>
+    			<artifactId>jackson-core</artifactId>
+    			<version>2.15.4</version>
+    		</dependency>
+    	</dependencies>
+    </dependencyManagement>
 </project>

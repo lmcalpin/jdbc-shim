@@ -7,3 +7,6 @@ build
 .project
 .settings
 .vscode
+/.apt_generated/
+/.apt_generated_tests/
+/target/
